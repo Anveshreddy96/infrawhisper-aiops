@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: infrawhisper-api
+  labels:
+    app: infrawhisper-api
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: infrawhisper-api
+  template:
+    metadata:
+      labels:
+        app: infrawhisper-api
+    spec:
+      containers:
+        - name: infrawhisper-api
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: AWS_REGION_NAME
+              value: {{ .Values.env.AWS_REGION_NAME }}
+            - name: DYNAMODB_TABLE
+              value: {{ .Values.env.DYNAMODB_TABLE }}
+            - name: LAMBDA_FUNCTION
+              value: {{ .Values.env.LAMBDA_FUNCTION }}
+            - name: BEDROCK_MODEL
+              value: {{ .Values.env.BEDROCK_MODEL }}
+          resources:
+            requests:
+              memory: {{ .Values.resources.requests.memory }}
+              cpu: {{ .Values.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.resources.limits.memory }}
+              cpu: {{ .Values.resources.limits.cpu }}
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
