@@ -59,5 +59,5 @@ npm start
 
 Anvesh Reddy - AWS DevOps Engineer
 AWS Certified Solutions Architect (SAA-C03)
-4+ Years Experience | M3 Solutions Pvt Ltd
-Clients: Citi Bank, Volvo, Halliburton, Flipkart
+4+ Years Experience | Oregon Systems
+Clients: Citi Bank, Flipkart
